@@ -85,11 +85,11 @@ class Interpreter:
         if display:
             yield from terminal_interface(self, message)
             return
-        
+
         # One-off message
         if message:
             self.messages.append({"role": "user", "message": message})
-            
+
             yield from self._respond()
 
             # Save conversation
@@ -98,11 +98,11 @@ class Interpreter:
                 if not os.path.exists(self.conversation_history_path):
                     os.makedirs(self.conversation_history_path)
                 # Write or overwrite the file
-                with open(os.path.join(self.conversation_history_path, self.conversation_name + '.json'), 'w') as f:
+                with open(os.path.join(self.conversation_history_path, f'{self.conversation_name}.json'), 'w') as f:
                     json.dump(self.messages, f)
-                
+
             return
-        
+
         raise Exception("`interpreter.chat()` requires a display. Set `display=True` or pass a message into `interpreter.chat(message)`.")
 
     def _respond(self):
